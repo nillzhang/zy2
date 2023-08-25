@@ -1,0 +1,32 @@
+import unittest
+from 番茄钟 import tomato_count, count
+
+class TestTomatoClock(unittest.TestCase):
+    def setUp(self):
+        global count
+        count = 0
+
+    def test_tomato_count(self):
+        global count
+        tomato_count()
+        self.assertEqual(count, 1)
+
+if __name__ == '__main__':
+    unittest.main()
+
+
+import unittest
+from 番茄钟 import music_allow, music_flag
+
+class TestTomatoClock(unittest.TestCase):
+    def setUp(self):
+        global music_flag
+        music_flag = True
+
+    def test_music_allow(self):
+        global music_flag
+        music_allow()
+        self.assertEqual(music_flag, False)
+
+if __name__ == '__main__':
+    unittest.main()
