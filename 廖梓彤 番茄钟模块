@@ -1,0 +1,15 @@
+# 创建番茄计时函数
+def tomato_clock(remain_time):
+    ...
+
+# 创建番茄计数的函数
+def tomato_count():
+    ...
+
+# 创建休息时间函数
+def relax():
+    ...
+
+# 音乐控制函数
+def music_allow():
+    ...
