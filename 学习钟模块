@@ -1,0 +1,80 @@
+# 创建番茄计时函数
+# strptime()函数将字符串转换为datetime
+def tomato_clock(remain_time):
+    # 如果在休息时间未结束就开启番茄钟，则停止音乐
+    pygame.mixer.music.pause()
+    # 避免未进行番茄钟时长选择
+    if remain_time == 0:
+        lb3.configure(text='请先选择番茄钟时长')
+        return
+    print(remain_time)
+    begin_time = time.strftime('%M:%S', time.gmtime(remain_time))
+    lb2.configure(text=begin_time)
+    lb3.configure(text='总时间/剩余时间')
+    global thread_flag
+    if thread_flag:
+        thread_flag = False
+    else:
+        thread_flag = True
+    tmp_thread_flag = thread_flag
+    for i in range(remain_time):
+        if tmp_thread_flag != thread_flag:
+            return
+        remain_time -= 1
+        remain_time_str = time.strftime('/ %M:%S', time.gmtime(remain_time))
+        lb1.configure(text=remain_time_str)
+        root.update()
+        time.sleep(1)
+        if remain_time == 0:
+            Beep(500, 800)
+            tomato_count()
+            mymsg()
+    lb1.configure(text=begin_time)
+    relax()
+
+# 创建番茄计数的函数
+def tomato_count():
+    global count
+    count += 1
+    lb4.configure(text=count)
+
+# 创建休息时间函数
+def relax():
+    remain_time = 600  # 休息10分钟
+    begin_time = time.strftime('%M:%S', time.gmtime(remain_time))
+    lb2.configure(text=begin_time)
+    lb3.configure(text='总时间/剩余时间')
+
+    # 线程标志，用于结束旧线程
+    global thread_flag
+    if thread_flag:
+        thread_flag = False
+    else:
+        thread_flag = True
+    tmp_thread_flag = thread_flag
+    pygame.mixer.music.play(-1)
+    for i in range(remain_time):
+        if tmp_thread_flag != thread_flag:
+            return
+        remain_time -= 1
+        remain_time_str = time.strftime('/ %M:%S', time.gmtime(remain_time))
+        lb1.configure(text=remain_time_str)
+        root.update()
+        time.sleep(1)
+        if remain_time == 0:
+            pygame.mixer.music.pause()
+            mymsg2()
+    lb1.configure(text=begin_time)
+
+# 音乐控制函数
+def music_allow():
+    global music_flag
+    # 如果已经是True(即不禁止音乐时)，勾选了按钮，则music_flag 变为 False，禁止音乐
+    if music_flag:
+        music_flag = False
+        pygame.mixer.music.set_volume(0.0)
+    else:
+        music_flag = True
+        pygame.mixer.music.set_volume(0.5)
+
+if __name__ == "__main__":
