@@ -1,0 +1,45 @@
+# 创建完成计时后的弹窗
+def mymsg():
+    try:
+        tk.messagebox.showinfo("提示", "恭喜完成一个学习周期！！记得休息一下")
+    except Exception as e:
+        print(type(e), e)
+        sys.exit()
+
+# 休息结束弹窗
+def mymsg2():
+    tk.messagebox.showinfo("提示", "休息完毕！")
+
+# 创建番茄计时函数
+# strptime()函数将字符串转换为datetime
+def tomato_clock(remain_time):
+    # 如果在休息时间未结束就开启番茄钟，则停止音乐
+    pygame.mixer.music.pause()
+    # 避免未进行番茄钟时长选择
+    if remain_time == 0:
+        lb3.configure(text='请先选择学习钟时长')
+        return
+    print(remain_time)
+    begin_time = time.strftime('%M:%S', time.gmtime(remain_time))
+    lb2.configure(text=begin_time)
+    lb3.configure(text='总时间/剩余时间')
+    global thread_flag
+    if thread_flag:
+        thread_flag = False
+    else:
+        thread_flag = True
+    tmp_thread_flag = thread_flag
+    for i in range(remain_time):
+        if tmp_thread_flag != thread_flag:
+            return
+        remain_time -= 1
+        remain_time_str = time.strftime('/ %M:%S', time.gmtime(remain_time))
+        lb1.configure(text=remain_time_str)
+        root.update()
+        time.sleep(1)
+        if remain_time == 0:
+            Beep(500, 800)
+            tomato_count()
+            mymsg()
+    lb1.configure(text=begin_time)
+    relax()
